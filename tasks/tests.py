@@ -1,3 +1,9 @@
-from django.test import TestCase
+import pytest
+from django.urls import reverse
+from django.test import Client
 
-# Create your tests here.
+@pytest.mark.django_db
+def test_task_list_view_renders():
+    client = Client()
+    response = client.get(reverse('task_list'))
+    assert response.status_code == 200

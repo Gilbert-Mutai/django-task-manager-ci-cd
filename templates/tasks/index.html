@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 pt-6 pb-24 relative"> <!-- Added pb-24 -->
+
+  <!-- Header Row -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-orange-400">Tasks</h1>
+    <span class="text-sm text-zinc-300">{{ incomplete_tasks|length }} Active</span>
+  </div>
+
+  <!-- Search Form -->
+  <form method="get" class="mb-4">
+    <input
+      type="text"
+      name="q"
+      value="{{ request.GET.q }}"
+      placeholder="Search tasks..."
+      class="w-full px-4 py-2 rounded bg-zinc-800 text-white placeholder-zinc-400 focus:outline-none"
+    >
+  </form>
+
+  <!-- To Be Completed -->
+  <h2 class="text-xl font-semibold text-white mb-2">To Be Completed</h2>
+  <ul class="mb-6 space-y-2">
+    {% for task in incomplete_tasks %}
+    <li class="bg-zinc-800 p-3 rounded flex justify-between items-center">
+      <span class="text-white">{{ task.title }}</span>
+      <form method="post" action="{% url 'toggle_task' task.id %}">
+        {% csrf_token %}
+        <button title="Mark complete" class="text-orange-400 hover:text-orange-300 text-xl">✔️</button>
+      </form>
+    </li>
+    {% empty %}
+    <li class="text-zinc-400 italic">No tasks to show.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Completed Tasks -->
+  <details class="mb-6">
+    <summary class="cursor-pointer text-lg font-medium text-orange-300 mb-2">
+      Completed Tasks
+    </summary>
+    <ul class="space-y-2 mt-2">
+      {% for task in completed_tasks %}
+      <li class="bg-zinc-800 p-3 rounded flex justify-between items-center opacity-60 line-through">
+        <div>
+          <span class="text-white">{{ task.title }}</span>
+          <div class="text-xs text-zinc-400">{{ task.created_at|date:"d/m/Y" }}</div>
+        </div>
+        <form method="post" action="{% url 'toggle_task' task.id %}">
+          {% csrf_token %}
+          <button title="Mark incomplete" class="text-orange-400 hover:text-orange-300 text-xl">🔄</button>
+        </form>
+      </li>
+      {% empty %}
+      <li class="text-zinc-400 italic">No completed tasks yet.</li>
+      {% endfor %}
+    </ul>
+  </details>
+</div>
+
+<!-- Floating Add Button (bottom-right but OUTSIDE main container) -->
+<div class="fixed bottom-6 right-6 z-50">
+  <button id="addTaskBtn"
+    class="bg-orange-400 hover:bg-orange-300 text-black rounded-full w-14 h-14 flex items-center justify-center shadow-lg text-3xl font-bold transition-all duration-300">
+    +
+  </button>
+</div>
+
+<!-- Slide-Up New Task Form -->
+<div id="taskForm" class="hidden fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-700 p-6 z-50 shadow-lg">
+  <form method="post" action="{% url 'create_task' %}">
+    {% csrf_token %}
+    <input name="title" type="text" placeholder="Add a Task..." required
+      class="w-full mb-3 px-4 py-2 rounded bg-zinc-800 text-white placeholder-zinc-400 focus:outline-none">
+    <div class="flex justify-end">
+      <button type="submit"
+        class="bg-orange-400 hover:bg-orange-300 text-black px-4 py-2 rounded font-semibold">Save</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const btn = document.getElementById("addTaskBtn");
+  const form = document.getElementById("taskForm");
+  btn.addEventListener("click", () => {
+    form.classList.toggle("hidden");
+  });
+</script>
+{% endblock %}

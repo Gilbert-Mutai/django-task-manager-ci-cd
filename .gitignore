@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+local_settings.py
+.env
+.env.*
+
+# Django migrations (optional to ignore if you want to keep them)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+# Uncomment the next line only if you don't want to track initial migrations
+# **/migrations/*.py
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.Python
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.swp
+*.swo
+*~
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+coverage.xml
+
+# Test cache
+.pytest_cache/
+.cache/
+
+# Node (if using npm/yarn for frontend)
+node_modules/
+*.tsbuildinfo
+
+# Docker
+*.pid
+celerybeat-schedule

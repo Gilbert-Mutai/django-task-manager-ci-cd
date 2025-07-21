@@ -21,7 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@oacl!l69w1h5et%^$9#phn0-uy0(q*bv=zgmtaf7^20iw(8#d"
+SECRET_KEY = (
+    "django-insecure-@oacl!l69w1h5et%^$9#phn0-uy0(q*bv=zgmtaf7^20iw(8#d"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,8 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
-    'tasks',
+    "tasks",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = "taskmanager.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -117,7 +118,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",

@@ -21,7 +21,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   })
 }
 
-# Attach AWS managed policies to the execution role
+# Attach AWS managed policy for ECS execution
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
@@ -81,4 +81,15 @@ resource "aws_ecs_service" "django" {
     aws_lb_listener.app_listener,
     aws_iam_role_policy_attachment.ecs_task_execution_policy
   ]
+}
+
+
+# Allow ALB to reach ECS service on port 8000
+resource "aws_security_group_rule" "allow_alb_to_ecs" {
+  type                     = "ingress"
+  from_port                = 8000
+  to_port                  = 8000
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.ecs_sg.id
+  source_security_group_id = aws_security_group.alb_sg.id
 }

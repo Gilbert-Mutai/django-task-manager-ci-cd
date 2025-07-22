@@ -12,6 +12,9 @@ build/
 *.manifest
 *.spec
 
+.terraform/
+
+
 # Django
 *.log
 *.pot
@@ -67,6 +70,8 @@ coverage.xml
 # Test cache
 .pytest_cache/
 .cache/
+.terraform/
+
 
 # Node (if using npm/yarn for frontend)
 node_modules/

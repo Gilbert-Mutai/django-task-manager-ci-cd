@@ -1,14 +1,14 @@
 resource "aws_security_group" "ecs_sg" {
-  name        = "${var.project_name}-sg"
-  description = "Allow HTTP/Django traffic"
+  name        = "${var.project_name}-ecs-sg"
+  description = "Allow traffic from ALB to ECS"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "Allow HTTP from anywhere"
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "Allow ALB traffic to ECS on port 8000"
+    from_port       = 8000
+    to_port         = 8000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id] # Only ALB can talk to ECS
   }
 
   egress {
@@ -20,7 +20,7 @@ resource "aws_security_group" "ecs_sg" {
   }
 
   tags = {
-    Name = "${var.project_name}-sg"
+    Name = "${var.project_name}-ecs-sg"
   }
 }
 

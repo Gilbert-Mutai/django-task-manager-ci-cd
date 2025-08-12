@@ -1,13 +1,18 @@
 resource "aws_lb" "app_alb" {
-  name               = "taskmanager-alb"
+  name               = "${var.project_name}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = aws_subnet.public[*].id
 
-  tags = {
-    Name = "taskmanager-alb"
-  }
+  enable_deletion_protection = false # Change to true in production for safety
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name = "${var.project_name}-alb"
+    }
+  )
 }
 
 resource "aws_lb_target_group" "app_tg" {
@@ -18,14 +23,21 @@ resource "aws_lb_target_group" "app_tg" {
   target_type = "ip"
 
   health_check {
-    path                = "/healthz/"
+    path                = var.health_check_path
     protocol            = "HTTP"
-    matcher             = "200"
+    matcher             = "200-399"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name = "${var.project_name}-tg"
+    }
+  )
 }
 
 resource "aws_lb_listener" "app_listener" {
